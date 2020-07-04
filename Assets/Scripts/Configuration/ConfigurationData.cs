@@ -11,11 +11,8 @@ public class ConfigurationData
 {
     #region Fields
 
-    const string ConfigurationDataFileName = "ConfigurationData.csv";
-
     // configuration data
-    static float _paddleMoveUnitsPerSecond = 10;
-    static float _ballImpulseForce = 200;
+    const string ConfigurationDataFileName = "ConfigurationData.csv";
 
     #endregion
 
@@ -25,13 +22,49 @@ public class ConfigurationData
     /// Gets the paddle move units per second
     /// </summary>
     /// <value>paddle move units per second</value>
-    public float PaddleMoveUnitsPerSecond => _paddleMoveUnitsPerSecond;
+    public static float PaddleMoveUnitsPerSecond { get; private set; } = 10;
 
     /// <summary>
     /// Gets the impulse force to apply to move the ball
     /// </summary>
     /// <value>impulse force</value>
-    public float BallImpulseForce => _ballImpulseForce;
+    public static float BallImpulseForce { get; private set; } = 200;
+
+    /// <summary>
+    /// Gets the ball lifetime
+    /// </summary>
+    public static float BallLifetime { get; private set; } = 10;
+
+    /// <summary>
+    /// Gets minimum time for random spawn balls
+    /// </summary>
+    public static float MinSpawnTime { get; private set; } = 5;
+
+    /// <summary>
+    /// Gets maximum time for random spawn balls
+    /// </summary>
+    public static float MaxSpawnTime { get; private set; } = 10;
+
+    
+    /// <summary>
+    /// Gets how many points standard block is worth
+    /// </summary>
+    public static int CostStandardBlock { get; private set; } = 1;
+    
+    /// <summary>
+    /// Gets how many points bonus block is worth
+    /// </summary>
+    public static int CostBonusBlock { get; private set; } = 2;
+    
+    /// <summary>
+    /// Gets how many points others blocks is worth
+    /// </summary>
+    public static int CostPickupBlocks { get; private set; } = 5;
+
+    /// <summary>
+    /// Gets how many balls maybe per games;
+    /// </summary>
+    public static int NumberBalls { get; private set; } = 5;
 
     #endregion
 
@@ -69,8 +102,15 @@ public class ConfigurationData
     private void SetConfigurationDataFields(string csvValues)
     {
         string[] values = csvValues.Split(',');
-        _paddleMoveUnitsPerSecond = float.Parse(values[0]);
-        _ballImpulseForce = float.Parse(values[1]);
+        PaddleMoveUnitsPerSecond = float.Parse(values[0]);
+        BallImpulseForce = float.Parse(values[1]);
+        BallLifetime = float.Parse(values[2]);
+        MinSpawnTime = float.Parse(values[3]);
+        MaxSpawnTime = float.Parse(values[4]);
+        CostStandardBlock = int.Parse(values[5]);
+        CostBonusBlock = int.Parse(values[6]);
+        CostPickupBlocks = int.Parse(values[7]);
+        NumberBalls = int.Parse(values[8]);
     }
 
     #endregion

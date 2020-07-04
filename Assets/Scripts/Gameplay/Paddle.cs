@@ -51,7 +51,6 @@ public class Paddle : MonoBehaviour
 
     private bool IfTop(float ballPosition, float paddleTop)
     {
-        Debug.Log("ball " + ballPosition + " paddle " + paddleTop);
         if (ballPosition + 0.05f < paddleTop)
             return false;
         return true;
