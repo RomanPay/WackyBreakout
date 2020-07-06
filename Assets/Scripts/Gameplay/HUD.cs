@@ -6,34 +6,53 @@ using UnityEngine.UI;
 
 public class HUD : MonoBehaviour
 {
-    [SerializeField] private Text score;
-    [SerializeField] private Text ballsLeft;
-    private int _score = 0;
+    #region Fields
 
-    private static int _ballLeft;
-    
-    private string _prefixScoreText;
-    private string _prefixBallLeftText;
+    // score support
+    private static Text _scoreText;
+    private static int _score = 0;
+    private const string PrefixScoreText = "Score: ";
+
+    // balls left support
+    private static Text _ballsLefText;
+    private static int _ballsLeft;
+    private const string PrefixBallLeftText = "x";
+
+    #endregion
+
     private void Start()
     {
-        _prefixBallLeftText = "x";
-        _ballLeft = ConfigurationUtils.NumberBalls;
-        ballsLeft.text = _prefixBallLeftText + _ballLeft;
+        // initialize score text
+        _scoreText = GameObject.FindGameObjectWithTag("ScoreText").GetComponent<Text>();
+        _scoreText.text = PrefixScoreText + _score;
         
-        _prefixScoreText = "Score ";
-        score.text = _prefixScoreText + _score;
+        // initialize balls left value and text
+        _ballsLeft = ConfigurationUtils.NumberBalls;
+        _ballsLefText = GameObject.FindGameObjectWithTag("BallsLeftText").GetComponent<Text>();
+        _ballsLefText.text = PrefixBallLeftText + _ballsLeft;
     }
 
-    public void IncreaseBalls()
+    #region Public methods
+
+    /// <summary>
+    /// Updates the balls left
+    /// </summary>
+    public static void DecreaseBalls()
     {
-        if (_ballLeft > 0)
-            _ballLeft--;
-        ballsLeft.text = _prefixBallLeftText + _ballLeft;
+        if (_ballsLeft > 0)
+            _ballsLeft--;
+        _ballsLefText.text = PrefixBallLeftText + _ballsLeft;
     }
-    public void AddScorePoints(int points)
+
+    /// <summary>
+    /// Updates score
+    /// </summary>
+    /// <param name="points">points to add</param>
+    public static void AddScorePoints(int points)
     {
         _score += points;
-        score.text = _prefixScoreText + _score;
+        _scoreText.text = PrefixScoreText + _score;
     }
-    
+
+    #endregion
 }

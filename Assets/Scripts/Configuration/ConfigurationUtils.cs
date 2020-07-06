@@ -46,7 +46,7 @@ public static class ConfigurationUtils
     public static int CostBonusBlock => ConfigurationData.CostBonusBlock;
     
     /// <summary>
-    /// Gets how many points others blocks is worth
+    /// Gets how many points pickup blocks is worth
     /// </summary>
     public static int CostPickupBlocks => ConfigurationData.CostPickupBlocks;
     
@@ -54,6 +54,28 @@ public static class ConfigurationUtils
     /// Gets how many balls maybe per games;
     /// </summary>
     public static int NumberBalls => ConfigurationData.NumberBalls;
+    
+    /// <summary>
+    /// Gets the probability that a standard block will be added to the level 
+    /// </summary>
+    public static float StandardBlockProbability => ConfigurationData.StandardBlockProbability;
+    
+    
+    /// <summary>
+    /// Gets the probability that a bonus block will be added to the level
+    /// </summary>
+    public static float BonusBlockProbability => ConfigurationData.BonusBlockProbability;
+    
+    /// <summary>
+    /// Gets the probability that a freezer block will be added to the level
+    /// </summary>
+    public static float FreezerBlockProbability => ConfigurationData.FreezerBlockProbability;
+    
+    /// <summary>
+    /// Gets the probability that a speedup block will be added to the level
+    /// </summary>
+    public static float SpeedupBlockProbability => ConfigurationData.SpeedupBlockProbability;
+
 
     #endregion
 }

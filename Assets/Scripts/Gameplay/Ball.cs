@@ -9,24 +9,27 @@ using UnityEngine.Timeline;
 /// </summary>
 public class Ball : MonoBehaviour
 {
-    private Rigidbody2D _rigidbody2D;
-    private Timer _timerLifetime;
-    private Timer _timerForNewBall;
-    private BallSpawner _ballSpawner;
-    private bool _ifTimeFinish;
+    #region Fields
 
-    private HUD _hud;
+    // Move delay timer
+    private Timer _timerMove;
+
+    // Death timer
+    private Timer _timerDeath;
+
+    private Rigidbody2D _rigidbody2D;
+    private BallSpawner _ballSpawner;
+
+    #endregion
 
     void Start()
     {
+        // Set timers
         SetTimers();
-
+        
+        // Save for efficiently
         _ballSpawner = Camera.main.GetComponent<BallSpawner>();
-        
         _rigidbody2D = GetComponent<Rigidbody2D>();
-        
-        _hud = GameObject.FindWithTag("HUD").GetComponent<HUD>();
-        
     }
 
     /// <summary>
@@ -35,18 +38,14 @@ public class Ball : MonoBehaviour
     private void SetTimers()
     {
         // Timer for lifetime
-        _timerLifetime = gameObject.AddComponent<Timer>();
-        _timerLifetime.Duration = ConfigurationUtils.BallLifetime;
-        _timerLifetime.Run();
+        _timerDeath = gameObject.AddComponent<Timer>();
+        _timerDeath.Duration = ConfigurationUtils.BallLifetime;
+        _timerDeath.Run();
         
         // Timer for start moving new ball
-        _timerForNewBall = gameObject.AddComponent<Timer>();
-        _timerForNewBall.Duration = 1f;
-        _timerForNewBall.Run();
-        
-        // Flag for check if timer above finished
-        // for prevent adding force to the ball every frame
-        _ifTimeFinish = false;
+        _timerMove = gameObject.AddComponent<Timer>();
+        _timerMove.Duration = 1f;
+        _timerMove.Run();
     }
     
     /// <summary>
@@ -55,22 +54,26 @@ public class Ball : MonoBehaviour
     /// <param name="direction">direction</param>
     public void SetDirection(Vector2 direction)
     {
-        _rigidbody2D.velocity = direction * (Time.deltaTime * ConfigurationUtils.BallImpulseForce);
+        float speed = _rigidbody2D.velocity.magnitude;
+        _rigidbody2D.velocity = direction * speed;
     }
     
     void Update()
     {
-        if (_timerLifetime.Finished)
+        if (_timerDeath.Finished)
             DestroyAndSpawn();
 
         if (gameObject.transform.position.y < ScreenUtils.ScreenBottom)
         {
-            _hud.IncreaseBalls();
+            HUD.DecreaseBalls();
             DestroyAndSpawn();
         }
-        
-        if (_timerForNewBall.Finished && !_ifTimeFinish)
+
+        if (_timerMove.Finished)
+        {
+            _timerMove.Stop();
             StartMoving();
+        }
     }
 
     /// <summary>
@@ -79,12 +82,14 @@ public class Ball : MonoBehaviour
     private void StartMoving()
     {
         float angle = 270f * (Mathf.PI / 180);
-        Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
-        _rigidbody2D.AddForce(direction * (Time.deltaTime * ConfigurationUtils.BallImpulseForce), 
-            ForceMode2D.Impulse);
-        _ifTimeFinish = true;
+        Vector2 force = new Vector2(ConfigurationUtils.BallImpulseForce * Mathf.Cos(angle),
+            ConfigurationUtils.BallImpulseForce * Mathf.Sin(angle));
+        _rigidbody2D.AddForce(force);
     }
 
+    /// <summary>
+    /// Destroys current ball and spawns new
+    /// </summary>
     private void DestroyAndSpawn()
     {
         Destroy(gameObject);

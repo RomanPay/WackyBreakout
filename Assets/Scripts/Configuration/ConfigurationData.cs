@@ -66,6 +66,27 @@ public class ConfigurationData
     /// </summary>
     public static int NumberBalls { get; private set; } = 5;
 
+    /// <summary>
+    /// Gets the probability that a standard block will be added to the level
+    /// </summary>
+    public static float StandardBlockProbability { get; private set; } = 0.7f;
+
+    /// <summary>
+    /// Gets the probability that a bonus block will be added to the level
+    /// </summary>
+    public static float BonusBlockProbability { get; private set; } = 0.2f;
+
+    /// <summary>
+    /// Gets the probability that a freezer block will be added to the level
+    /// </summary>
+    public static float FreezerBlockProbability { get; private set; } = 0.05f;
+    
+    
+    /// <summary>
+    /// Gets the probability that a speedup block will be added to the level
+    /// </summary>
+    public static float SpeedupBlockProbability { get; private set; } = 0.05f;
+
     #endregion
 
     #region Constructor
@@ -78,14 +99,18 @@ public class ConfigurationData
     /// </summary>
     public ConfigurationData()
     {
+        // Read and save configuration data from file
         StreamReader input = null;
         try
         {
+            // create stream reader object
             input = File.OpenText(Path.Combine(Application.streamingAssetsPath, ConfigurationDataFileName));
 
+            // read in names and values
             string names = input.ReadLine();
             string values = input.ReadLine();
 
+            // set configuration data fields
             SetConfigurationDataFields(values);
         }
         catch (Exception e)
@@ -94,13 +119,19 @@ public class ConfigurationData
         }
         finally
         {
+            // always close input file
             input?.Close();
         }
 
     }
 
+    /// <summary>
+    /// Sets the configuration data fields from the provided csv string
+    /// </summary>
+    /// <param name="csvValues">csv string of values</param>
     private void SetConfigurationDataFields(string csvValues)
     {
+        // the code below assumes that is known the order of the provided data
         string[] values = csvValues.Split(',');
         PaddleMoveUnitsPerSecond = float.Parse(values[0]);
         BallImpulseForce = float.Parse(values[1]);
@@ -111,6 +142,10 @@ public class ConfigurationData
         CostBonusBlock = int.Parse(values[6]);
         CostPickupBlocks = int.Parse(values[7]);
         NumberBalls = int.Parse(values[8]);
+        StandardBlockProbability = float.Parse(values[9]) / 100;
+        BonusBlockProbability = float.Parse(values[10]) / 100;
+        FreezerBlockProbability = float.Parse(values[11]) / 100;
+        SpeedupBlockProbability = float.Parse(values[12]) / 100;
     }
 
     #endregion

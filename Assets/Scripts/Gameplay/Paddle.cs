@@ -28,6 +28,11 @@ public class Paddle : MonoBehaviour
         _halfHeightCollider = GetComponent<BoxCollider2D>().size.y / 2;
     }
 
+    /// <summary>
+    /// Clamp paddle in the screen
+    /// </summary>
+    /// <param name="position">x position to the clamp</param>
+    /// <returns>clamped x position</returns>
     float CalculateClampedX(Vector2 position)
     {
         if (position.x - _halfWidthCollider < ScreenUtils.ScreenLeft)
@@ -49,6 +54,12 @@ public class Paddle : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Check position between top paddle and ball
+    /// </summary>
+    /// <param name="ballPosition">position ball</param>
+    /// <param name="paddleTop">position paddle top</param>
+    /// <returns></returns>
     private bool IfTop(float ballPosition, float paddleTop)
     {
         if (ballPosition + 0.05f < paddleTop)

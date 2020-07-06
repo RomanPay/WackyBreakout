@@ -1,2 +1,2 @@
-paddleMoveUnitsPerSecond,ballImpulseForce,ballLifetime,minSpawnTime,maxSpawnTime,costStandardBlock,costBonusBlock,costPickupBlocks,numberBalls
-10,200,10,5,10,1,2,5,5
+paddleMoveUnitsPerSecond,ballImpulseForce,ballLifetime,minSpawnTime,maxSpawnTime,costStandardBlock,costBonusBlock,costPickupBlocks,numberBalls,StandBlockProbability,FreezerBlockProbability,SpeedupBlockProbability,BonusBlockProbability
+10,200,10,5,10,1,2,5,5,70,5,5,20
