@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Timeline;
 
 
 /// <summary>
@@ -16,16 +15,20 @@ public class Paddle : MonoBehaviour
     private float _halfHeightCollider;
 
     private const float BounceAngleHalfRange = 60 * (Mathf.PI / 180);
-    
-    /// <summary>
-    /// Use this for initialize
-    /// </summary>
+
+    private bool _ifFrozen;
+    private Timer _frozenTimer;
     void Start()
     {
         // Saved this for efficiency
         _rigidbody = GetComponent<Rigidbody2D>();
         _halfWidthCollider = GetComponent<BoxCollider2D>().size.x / 2;
         _halfHeightCollider = GetComponent<BoxCollider2D>().size.y / 2;
+        
+        _frozenTimer = gameObject.AddComponent<Timer>();
+        _ifFrozen = false;
+        
+        EventManager.AddFreezeEffectListener(SetFreezeState);
     }
 
     /// <summary>
@@ -44,7 +47,7 @@ public class Paddle : MonoBehaviour
     
     void FixedUpdate()
     {
-        if (Input.GetAxis("Horizontal") != 0)
+        if (Input.GetAxis("Horizontal") != 0 && !_ifFrozen)
         {
             Vector2 position = transform.position;
             
@@ -52,6 +55,19 @@ public class Paddle : MonoBehaviour
             position.x = CalculateClampedX(position);
             _rigidbody.MovePosition(position);
         }
+    }
+
+    private void SetFreezeState(int freezeTime)
+    {
+        _frozenTimer.Duration = freezeTime;
+        _ifFrozen = true;
+        _frozenTimer.Run();
+    }
+
+    void Update()
+    {
+        if (_frozenTimer.Finished)
+            _ifFrozen = false;
     }
 
     /// <summary>

@@ -14,7 +14,7 @@ public class Block : MonoBehaviour
     /// Destroys the block on collision with ball
     /// </summary>
     /// <param name="other">collider</param>
-    private void OnCollisionEnter2D(Collision2D other)
+    protected virtual void OnCollisionEnter2D(Collision2D other)
     {
         HUD.AddScorePoints(CostBlock);
         Destroy(gameObject);

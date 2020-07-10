@@ -69,23 +69,38 @@ public class ConfigurationData
     /// <summary>
     /// Gets the probability that a standard block will be added to the level
     /// </summary>
-    public static float StandardBlockProbability { get; private set; } = 0.7f;
+    public static float StandardBlockProbability { get; private set; } = 0.05f;
 
     /// <summary>
     /// Gets the probability that a bonus block will be added to the level
     /// </summary>
-    public static float BonusBlockProbability { get; private set; } = 0.2f;
+    public static float BonusBlockProbability { get; private set; } = 0.05f;
 
     /// <summary>
     /// Gets the probability that a freezer block will be added to the level
     /// </summary>
-    public static float FreezerBlockProbability { get; private set; } = 0.05f;
+    public static float FreezerBlockProbability { get; private set; } = 0.2f;
     
     
     /// <summary>
     /// Gets the probability that a speedup block will be added to the level
     /// </summary>
-    public static float SpeedupBlockProbability { get; private set; } = 0.05f;
+    public static float SpeedupBlockProbability { get; private set; } = 0.7f;
+
+    /// <summary>
+    /// Gets the freezer effect duration
+    /// </summary>
+    public static float FreezerEffectDuration { get; private set; } = 2f;
+
+    /// <summary>
+    /// Gets the speedup effect duration
+    /// </summary>
+    public static float SpeedupEffectDuration { get; private set; } = 4f;
+
+    /// <summary>
+    /// Gets the speedup factor increase
+    /// </summary>
+    public static float SpeedupFactor { get; private set; } = 2f;
 
     #endregion
 
@@ -146,6 +161,9 @@ public class ConfigurationData
         BonusBlockProbability = float.Parse(values[10]) / 100;
         FreezerBlockProbability = float.Parse(values[11]) / 100;
         SpeedupBlockProbability = float.Parse(values[12]) / 100;
+        FreezerEffectDuration = float.Parse(values[13]);
+        SpeedupEffectDuration = float.Parse(values[14]);
+        SpeedupFactor = float.Parse(values[15]);
     }
 
     #endregion

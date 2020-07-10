@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 
 /// <summary>
@@ -76,6 +77,20 @@ public static class ConfigurationUtils
     /// </summary>
     public static float SpeedupBlockProbability => ConfigurationData.SpeedupBlockProbability;
 
+    /// <summary>
+    /// Gets the freezer effect duration
+    /// </summary>
+    public static float FreezerEffectDuration => ConfigurationData.FreezerEffectDuration;
+
+    /// <summary>
+    /// Gets the speedup effect duration
+    /// </summary>
+    public static float SpeedupEffectDuration => ConfigurationData.SpeedupEffectDuration;
+
+    /// <summary>
+    /// Gets the speedup factor increase
+    /// </summary>
+    public static float SpeedupFactor => ConfigurationData.SpeedupFactor;
 
     #endregion
 }

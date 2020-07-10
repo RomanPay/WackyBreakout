@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Timeline;
+using UnityEngine.Events;
 
 
 /// <summary>
@@ -20,6 +21,11 @@ public class Ball : MonoBehaviour
     private Rigidbody2D _rigidbody2D;
     private BallSpawner _ballSpawner;
 
+    private Timer _timerSpeedupEffect;
+    private int _speedIncrease = 1;
+    private bool _ifSpeedup;
+    private bool _addSpeed;
+    
     #endregion
 
     void Start()
@@ -30,6 +36,9 @@ public class Ball : MonoBehaviour
         // Save for efficiently
         _ballSpawner = Camera.main.GetComponent<BallSpawner>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
+        
+        EventManager.AddSpeedupEffectListener(SetSpeedupEffect);
+        _ifSpeedup = false;
     }
 
     /// <summary>
@@ -46,6 +55,9 @@ public class Ball : MonoBehaviour
         _timerMove = gameObject.AddComponent<Timer>();
         _timerMove.Duration = 1f;
         _timerMove.Run();
+        
+        // Timer for speedup effect
+        _timerSpeedupEffect = gameObject.AddComponent<Timer>();
     }
     
     /// <summary>
@@ -74,8 +86,27 @@ public class Ball : MonoBehaviour
             _timerMove.Stop();
             StartMoving();
         }
+
+        if (_ifSpeedup &&)
+        {
+            _rigidbody2D.velocity *= _speedIncrease * Time.deltaTime;
+        }
+
+        //
+        if (_timerSpeedupEffect.Finished)
+            _ifSpeedup = false;
     }
 
+    private void SetSpeedupEffect(int speedUpTime, int speedIncrease)
+    {
+        Debug.Log("In set speed");
+        _timerSpeedupEffect.Duration = speedUpTime;
+        _speedIncrease = speedIncrease;
+        _ifSpeedup = true;
+        _addSpeed = true;
+        _timerSpeedupEffect.Run();
+    }
+    
     /// <summary>
     /// Moving new ball down
     /// </summary>
