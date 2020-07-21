@@ -15,7 +15,6 @@ public class LevelBuilder : MonoBehaviour
     private void Start()
     {
         Instantiate(prefabPaddle);
-        Instantiate(prefabBall);
         FillScreenBlock();
     }
 

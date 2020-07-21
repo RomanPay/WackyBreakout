@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Timeline;
@@ -22,9 +23,7 @@ public class Ball : MonoBehaviour
     private BallSpawner _ballSpawner;
 
     private Timer _timerSpeedupEffect;
-    private int _speedIncrease = 1;
-    private bool _ifSpeedup;
-    private bool _addSpeed;
+    private float _speedIncrease;
     
     #endregion
 
@@ -35,10 +34,10 @@ public class Ball : MonoBehaviour
         
         // Save for efficiently
         _ballSpawner = Camera.main.GetComponent<BallSpawner>();
-        _rigidbody2D = GetComponent<Rigidbody2D>();
         
+        // Speedup effect support
+        _rigidbody2D = GetComponent<Rigidbody2D>();
         EventManager.AddSpeedupEffectListener(SetSpeedupEffect);
-        _ifSpeedup = false;
     }
 
     /// <summary>
@@ -66,8 +65,9 @@ public class Ball : MonoBehaviour
     /// <param name="direction">direction</param>
     public void SetDirection(Vector2 direction)
     {
-        float speed = _rigidbody2D.velocity.magnitude;
-        _rigidbody2D.velocity = direction * speed;
+        Rigidbody2D rigidbody2D = GetComponent<Rigidbody2D>();
+        float speed = rigidbody2D.velocity.magnitude;
+        rigidbody2D.velocity = direction * speed;
     }
     
     void Update()
@@ -86,24 +86,29 @@ public class Ball : MonoBehaviour
             _timerMove.Stop();
             StartMoving();
         }
-
-        if (_ifSpeedup &&)
-        {
-            _rigidbody2D.velocity *= _speedIncrease * Time.deltaTime;
-        }
-
-        //
+        
         if (_timerSpeedupEffect.Finished)
-            _ifSpeedup = false;
+        {
+            _timerSpeedupEffect.Stop();
+            _rigidbody2D.velocity *= 1 / _speedIncrease;
+        }
     }
 
     private void SetSpeedupEffect(int speedUpTime, int speedIncrease)
     {
-        Debug.Log("In set speed");
-        _timerSpeedupEffect.Duration = speedUpTime;
-        _speedIncrease = speedIncrease;
-        _ifSpeedup = true;
-        _addSpeed = true;
+        if (!_timerSpeedupEffect.Running)
+        {
+            StartSpeedupEffect(speedUpTime, speedIncrease);
+            _rigidbody2D.velocity *= speedIncrease;
+        }
+        else
+            _timerSpeedupEffect.AddTime(speedUpTime);
+    }
+
+    private void StartSpeedupEffect(float duration, int speedupFactor)
+    {
+        _speedIncrease = speedupFactor;
+        _timerSpeedupEffect.Duration = duration;
         _timerSpeedupEffect.Run();
     }
     
@@ -112,9 +117,17 @@ public class Ball : MonoBehaviour
     /// </summary>
     private void StartMoving()
     {
-        float angle = 270f * (Mathf.PI / 180);
-        Vector2 force = new Vector2(ConfigurationUtils.BallImpulseForce * Mathf.Cos(angle),
-            ConfigurationUtils.BallImpulseForce * Mathf.Sin(angle));
+        if (_rigidbody2D.velocity.magnitude > 0)
+            return;
+        float angle = -90 * Mathf.Deg2Rad;
+        Vector2 force = new Vector2(
+                                ConfigurationUtils.BallImpulseForce * Mathf.Cos(angle),
+                                ConfigurationUtils.BallImpulseForce * Mathf.Sin(angle));
+        if (EffectUtils.SpeedupEffectActive)
+        {
+            StartSpeedupEffect(EffectUtils.TimerLeft, EffectUtils.SpeedupFactor);
+            force *= _speedIncrease;
+        }
         _rigidbody2D.AddForce(force);
     }
 

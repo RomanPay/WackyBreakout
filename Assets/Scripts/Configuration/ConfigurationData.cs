@@ -69,23 +69,23 @@ public class ConfigurationData
     /// <summary>
     /// Gets the probability that a standard block will be added to the level
     /// </summary>
-    public static float StandardBlockProbability { get; private set; } = 0.05f;
+    public static float StandardBlockProbability { get; private set; } = 0.7f;
 
     /// <summary>
     /// Gets the probability that a bonus block will be added to the level
     /// </summary>
-    public static float BonusBlockProbability { get; private set; } = 0.05f;
+    public static float BonusBlockProbability { get; private set; } = 0.2f;
 
     /// <summary>
     /// Gets the probability that a freezer block will be added to the level
     /// </summary>
-    public static float FreezerBlockProbability { get; private set; } = 0.2f;
+    public static float FreezerBlockProbability { get; private set; } = 0.05f;
     
     
     /// <summary>
     /// Gets the probability that a speedup block will be added to the level
     /// </summary>
-    public static float SpeedupBlockProbability { get; private set; } = 0.7f;
+    public static float SpeedupBlockProbability { get; private set; } = 0.05f;
 
     /// <summary>
     /// Gets the freezer effect duration

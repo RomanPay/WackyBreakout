@@ -21,6 +21,7 @@ public class PickupBlocks : Block
     {
         CostBlock = ConfigurationUtils.CostPickupBlocks;
        
+        EventManager.AddFreezeEffectInvoker(this);
         EventManager.AddSpeedupEffectInvoker(this);
         
         _freezeEffectDuration = (int)ConfigurationUtils.FreezerEffectDuration;

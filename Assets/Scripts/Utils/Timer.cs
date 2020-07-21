@@ -48,6 +48,21 @@ public class Timer : MonoBehaviour
     {
 		get { return started && !running; } 
 	}
+
+	
+	/// <summary>
+	/// Gets time left to finish
+	/// </summary>
+	/// <value>time left</value>
+	public float Left
+	{
+		get
+		{
+			if (running)
+				return totalSeconds - elapsedSeconds;
+			return 0f;
+		}
+	}
 	
 	/// <summary>
 	/// Gets whether or not the timer is currently running
@@ -104,5 +119,15 @@ public class Timer : MonoBehaviour
 		started = false;
 		running = false;
 	}
+
+	/// <summary>
+	/// Adds time to timer
+	/// </summary>
+	/// <param name="seconds">time to add</param>
+	public void AddTime(float seconds)
+	{
+		totalSeconds += seconds;
+	}
+	
 	#endregion
 }

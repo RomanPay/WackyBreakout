@@ -14,10 +14,13 @@ public class BallSpawner : MonoBehaviour
     private Timer _timerRandomSpawn;
 
     private bool _retrySpawn = false;
+    private float _spawnrange;
     private Vector2 _spawnLocationMin;
     private Vector2 _spawnLocationMax;
+    
     private void Start()
     {
+        // Gets coordinates for determinate spawn location
         GameObject tempBall = Instantiate(prefabBall);
         float ballColliderRadius = tempBall.GetComponent<CircleCollider2D>().radius;
         var position = tempBall.transform.position;
@@ -27,11 +30,19 @@ public class BallSpawner : MonoBehaviour
             position.y + ballColliderRadius);
         Destroy(tempBall);
         
+        _spawnrange = ConfigurationUtils.MaxSpawnTime - ConfigurationUtils.MinSpawnTime;
         _timerRandomSpawn = gameObject.AddComponent<Timer>();
-        _timerRandomSpawn.Duration = Random.Range(ConfigurationUtils.MinSpawnTime, ConfigurationUtils.MaxSpawnTime);
+        _timerRandomSpawn.Duration = GetSpawnDelay();
         _timerRandomSpawn.Run();
+        
+        SpawnBall();
     }
 
+    private float GetSpawnDelay()
+    {
+        return ConfigurationUtils.MinSpawnTime + Random.value * _spawnrange;
+    }
+    
     /// <summary>
     /// Spawn ball
     /// </summary>
@@ -50,11 +61,13 @@ public class BallSpawner : MonoBehaviour
 
     private void Update()
     {
-        if (_timerRandomSpawn.Finished || _retrySpawn)
+        if (_timerRandomSpawn.Finished)
         {
             SpawnBall();
-            _timerRandomSpawn.Duration = Random.Range(ConfigurationUtils.MinSpawnTime, ConfigurationUtils.MaxSpawnTime);
+            _timerRandomSpawn.Duration = GetSpawnDelay();
             _timerRandomSpawn.Run();
         }
+        if (_retrySpawn)
+            SpawnBall();
     }
 }
