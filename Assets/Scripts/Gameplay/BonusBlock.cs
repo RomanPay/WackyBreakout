@@ -5,8 +5,9 @@ using Random = UnityEngine.Random;
 
 public class BonusBlock : Block
 {
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         CostBlock = ConfigurationUtils.CostBonusBlock;
     }
 }

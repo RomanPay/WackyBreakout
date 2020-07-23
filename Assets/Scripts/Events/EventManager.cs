@@ -11,7 +11,57 @@ public static class EventManager
     // speedup event support
     private static List<PickupBlocks> _speedupEffectInvokers = new List<PickupBlocks>();
     private static List<UnityAction<int, int>> _speedupEffectListeners = new List<UnityAction<int, int>>();
+    
+    // event for add point
+    private static List<Block> _addPointsInvokers = new List<Block>();
+    private static List<UnityAction<int>> _addPointsListeners = new List<UnityAction<int>>();
 
+    // reduce ball left event
+    private static List<Ball> _ballsLeftInvoker = new List<Ball>();
+    private static List<UnityAction> _ballsLeftListener = new List<UnityAction>();
+
+    public static void BallsLeftInvokers(Ball invoker)
+    {
+        _ballsLeftInvoker.Add(invoker);
+        foreach (UnityAction listener in _ballsLeftListener)
+        {
+            invoker.BallsLeftAddedListener(listener);
+        }
+    }
+
+    public static void BallsLeftListeners(UnityAction listener)
+    {
+        _ballsLeftListener.Add(listener);
+        foreach (Ball ball in _ballsLeftInvoker)
+        {
+            ball.BallsLeftAddedListener(listener);
+        }
+    }
+    
+    /// <summary>
+    /// Add invoker for score point event
+    /// </summary>
+    /// <param name="invoker">invoker</param>
+    public static void AddPointsInvoker(Block invoker)
+    {
+        _addPointsInvokers.Add(invoker);
+        foreach (UnityAction<int> listener in _addPointsListeners)
+            invoker.AddPointsAddedListener(listener);
+    }
+
+    /// <summary>
+    /// Add listener for score point event
+    /// </summary>
+    /// <param name="listener">listener</param>
+    public static void AddPointsListener(UnityAction<int> listener)
+    {
+        _addPointsListeners.Add(listener);
+        foreach (Block block in _addPointsInvokers)
+        {
+            block.AddPointsAddedListener(listener);
+        }
+    }
+    
     /// <summary>
     /// Adds invoker for the freeze event
     /// </summary>

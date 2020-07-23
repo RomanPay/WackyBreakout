@@ -30,6 +30,9 @@ public class HUD : MonoBehaviour
         _ballsLeft = ConfigurationUtils.NumberBalls;
         _ballsLefText = GameObject.FindGameObjectWithTag("BallsLeftText").GetComponent<Text>();
         _ballsLefText.text = PrefixBallLeftText + _ballsLeft;
+        
+        EventManager.AddPointsListener(AddScorePoints);
+        EventManager.BallsLeftListeners(DecreaseBalls);
     }
 
     #region Public methods
@@ -37,7 +40,7 @@ public class HUD : MonoBehaviour
     /// <summary>
     /// Updates the balls left
     /// </summary>
-    public static void DecreaseBalls()
+    private void DecreaseBalls()
     {
         if (_ballsLeft > 0)
             _ballsLeft--;
@@ -48,7 +51,7 @@ public class HUD : MonoBehaviour
     /// Updates score
     /// </summary>
     /// <param name="points">points to add</param>
-    public static void AddScorePoints(int points)
+    private void AddScorePoints(int points)
     {
         _score += points;
         _scoreText.text = PrefixScoreText + _score;

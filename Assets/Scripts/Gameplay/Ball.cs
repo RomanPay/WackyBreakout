@@ -24,6 +24,8 @@ public class Ball : MonoBehaviour
 
     private Timer _timerSpeedupEffect;
     private float _speedIncrease;
+
+    private ReduceBallsLeft _ballsLeft;
     
     #endregion
 
@@ -38,6 +40,9 @@ public class Ball : MonoBehaviour
         // Speedup effect support
         _rigidbody2D = GetComponent<Rigidbody2D>();
         EventManager.AddSpeedupEffectListener(SetSpeedupEffect);
+        
+        _ballsLeft = new ReduceBallsLeft();
+        EventManager.BallsLeftInvokers(this);
     }
 
     /// <summary>
@@ -69,6 +74,11 @@ public class Ball : MonoBehaviour
         float speed = rigidbody2D.velocity.magnitude;
         rigidbody2D.velocity = direction * speed;
     }
+
+    public void BallsLeftAddedListener(UnityAction listener)
+    {
+        _ballsLeft.AddListener(listener);
+    }
     
     void Update()
     {
@@ -77,7 +87,7 @@ public class Ball : MonoBehaviour
 
         if (gameObject.transform.position.y < ScreenUtils.ScreenBottom)
         {
-            HUD.DecreaseBalls();
+            _ballsLeft.Invoke();
             DestroyAndSpawn();
         }
 

@@ -6,10 +6,12 @@ using Random = UnityEngine.Random;
 public class StandardBlock : Block
 {
     [SerializeField] private Sprite[] spriteStandardBlock = new Sprite[10];
+    private AddPoints _addPoints;
 
-    void Start()
+    protected override void Start()
     {
-        GetComponent<SpriteRenderer>().sprite = spriteStandardBlock[Random.Range(0, 10)];
+        base.Start();
         CostBlock = ConfigurationUtils.CostStandardBlock;
+        GetComponent<SpriteRenderer>().sprite = spriteStandardBlock[Random.Range(0, 10)];
     }
 }

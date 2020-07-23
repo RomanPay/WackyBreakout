@@ -17,8 +17,9 @@ public class PickupBlocks : Block
     private int _speedupEffectDuration;
     private int _speedupFactor;
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         CostBlock = ConfigurationUtils.CostPickupBlocks;
        
         EventManager.AddFreezeEffectInvoker(this);
@@ -69,22 +70,16 @@ public class PickupBlocks : Block
     
     protected override void OnCollisionEnter2D(Collision2D other)
     {
-        // Debug.Log("Now " + _effect);
-        
         if (_effect == PickupEffect.Freezer)
         {
             _freezerEffectActivated.Invoke(_freezeEffectDuration);
-            // Debug.Log("Settings freeze...");
         }
         else if (_effect == PickupEffect.Speedup)
         {
             _speedupEffectActivated.Invoke(_speedupEffectDuration, _speedupFactor);
-            // Debug.Log("Settings speedup...");
         }
         
         base.OnCollisionEnter2D(other);
-        // HUD.AddScorePoints(CostBlock);
-        // Destroy(gameObject);
     }
 }
 
