@@ -13,6 +13,12 @@ public static class MenuManager
             case MenuName.PauseMenu:
                 Object.Instantiate(Resources.Load("PauseMenu"));
                 break;
+            case MenuName.HelpMenu:
+                Object.Instantiate(Resources.Load("HelpMenu"));
+                break;
+            case MenuName.GameOverMenu:
+                Object.Instantiate(Resources.Load("GameOverMenu"));
+                break;
         }
     }
 }

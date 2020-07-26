@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class HUD : MonoBehaviour
@@ -9,14 +10,16 @@ public class HUD : MonoBehaviour
     #region Fields
 
     // score support
-    private static Text _scoreText;
-    private static int _score = 0;
+    private Text _scoreText;
+    private int _score = 0;
     private const string PrefixScoreText = "Score: ";
 
     // balls left support
-    private static Text _ballsLefText;
-    private static int _ballsLeft;
+    private Text _ballsLefText;
+    private int _ballsLeft;
     private const string PrefixBallLeftText = "x";
+
+    private LastBallLostEvent _lastBall;
 
     #endregion
 
@@ -33,6 +36,10 @@ public class HUD : MonoBehaviour
         
         EventManager.AddPointsListener(AddScorePoints);
         EventManager.BallsLeftListeners(DecreaseBalls);
+        EventManager.LastBlockListener(GameOver);
+        
+        _lastBall = new LastBallLostEvent();
+        EventManager.LastBallInvoker(this);
     }
 
     #region Public methods
@@ -44,6 +51,12 @@ public class HUD : MonoBehaviour
     {
         if (_ballsLeft > 0)
             _ballsLeft--;
+        if (_ballsLeft == 0)
+        {
+           GameOver();
+           AudioManager.Play(AudioClipName.Lose);
+        }
+
         _ballsLefText.text = PrefixBallLeftText + _ballsLeft;
     }
 
@@ -55,6 +68,17 @@ public class HUD : MonoBehaviour
     {
         _score += points;
         _scoreText.text = PrefixScoreText + _score;
+    }
+
+    private void GameOver()
+    {
+        MenuManager.GoToMenu(MenuName.GameOverMenu);
+        _lastBall.Invoke(_score);
+    }
+    
+    public void LastBallAddListener(UnityAction<int> listener)
+    {
+        _lastBall.AddListener(listener);
     }
 
     #endregion

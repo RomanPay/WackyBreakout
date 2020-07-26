@@ -107,6 +107,7 @@ public class Paddle : MonoBehaviour
             // tell ball to set direction to new direction
             Ball ballScript = coll.gameObject.GetComponent<Ball>();
             ballScript.SetDirection(direction);
+            AudioManager.Play(AudioClipName.HitPaddle);
         }
     }
 }

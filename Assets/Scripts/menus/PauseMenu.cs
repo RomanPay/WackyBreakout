@@ -14,6 +14,7 @@ public class PauseMenu : MonoBehaviour
     /// </summary>
     public void ResumeButton()
     {
+        AudioManager.Play(AudioClipName.ClickButton);
         Time.timeScale = 1;
         Destroy(gameObject);
     }
@@ -23,6 +24,7 @@ public class PauseMenu : MonoBehaviour
     /// </summary>
     public void QuitButton()
     {
+        AudioManager.Play(AudioClipName.ClickButton);
         Time.timeScale = 1;
         Destroy(gameObject);
         MenuManager.GoToMenu(MenuName.MainMenu);

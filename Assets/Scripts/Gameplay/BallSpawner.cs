@@ -35,6 +35,8 @@ public class BallSpawner : MonoBehaviour
         _timerRandomSpawn.Duration = GetSpawnDelay();
         _timerRandomSpawn.Run();
         
+        EventManager.BallSpawnListener(SpawnBall);
+        
         SpawnBall();
     }
 
@@ -46,7 +48,7 @@ public class BallSpawner : MonoBehaviour
     /// <summary>
     /// Spawn ball
     /// </summary>
-    public void SpawnBall()
+    private void SpawnBall()
     {
         if (Physics2D.OverlapArea(_spawnLocationMin, _spawnLocationMax) == null)
         {

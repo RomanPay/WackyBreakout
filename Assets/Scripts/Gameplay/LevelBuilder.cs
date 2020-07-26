@@ -27,7 +27,7 @@ public class LevelBuilder : MonoBehaviour
         Destroy(tempBlock);
 
         // Set start position for filing screen blocks
-        Vector2 startPosition = new Vector2(ScreenUtils.ScreenLeft + blockWidth / 2,
+        Vector2 startPosition = new Vector2(0 - blockWidth / 2,
                                             ScreenUtils.ScreenTop - blockHeight * 6);
 
         // Blocks per row with. Add +1 due to rounding down float at cast to int
@@ -37,7 +37,7 @@ public class LevelBuilder : MonoBehaviour
         Vector2 currentPosition = new Vector2(startPosition.x, startPosition.y);
         for (int row = 0; row < 3; row++)
         {
-            for (int column = 0; column < blockPerRow; column++)
+            for (int column = 0; column < 2; column++)
             {
                 PlaceBlock(currentPosition);
                 currentPosition.x += blockWidth;

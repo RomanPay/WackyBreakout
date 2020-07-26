@@ -10,4 +10,10 @@ public class BonusBlock : Block
         base.Start();
         CostBlock = ConfigurationUtils.CostBonusBlock;
     }
+
+    protected override void OnCollisionEnter2D(Collision2D other)
+    {
+        base.OnCollisionEnter2D(other);
+        AudioManager.Play(AudioClipName.BonusBlock);
+    }
 }

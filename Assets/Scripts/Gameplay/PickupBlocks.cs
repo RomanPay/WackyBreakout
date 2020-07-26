@@ -70,16 +70,18 @@ public class PickupBlocks : Block
     
     protected override void OnCollisionEnter2D(Collision2D other)
     {
+        base.OnCollisionEnter2D(other);
         if (_effect == PickupEffect.Freezer)
         {
             _freezerEffectActivated.Invoke(_freezeEffectDuration);
+            AudioManager.Play(AudioClipName.FreezeEffectStart);
         }
         else if (_effect == PickupEffect.Speedup)
         {
             _speedupEffectActivated.Invoke(_speedupEffectDuration, _speedupFactor);
+            AudioManager.Play(AudioClipName.SpeedupEffect);
         }
         
-        base.OnCollisionEnter2D(other);
     }
 }
 

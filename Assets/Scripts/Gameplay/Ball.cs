@@ -20,12 +20,12 @@ public class Ball : MonoBehaviour
     private Timer _timerDeath;
 
     private Rigidbody2D _rigidbody2D;
-    private BallSpawner _ballSpawner;
 
     private Timer _timerSpeedupEffect;
     private float _speedIncrease;
 
     private ReduceBallsLeft _ballsLeft;
+    private SpawnBallEvent _spawnBallEvent;
     
     #endregion
 
@@ -33,16 +33,16 @@ public class Ball : MonoBehaviour
     {
         // Set timers
         SetTimers();
-        
-        // Save for efficiently
-        _ballSpawner = Camera.main.GetComponent<BallSpawner>();
-        
+      
         // Speedup effect support
         _rigidbody2D = GetComponent<Rigidbody2D>();
         EventManager.AddSpeedupEffectListener(SetSpeedupEffect);
         
         _ballsLeft = new ReduceBallsLeft();
         EventManager.BallsLeftInvokers(this);
+        
+        _spawnBallEvent = new SpawnBallEvent();
+        EventManager.BallSpawnInvoker(this);
     }
 
     /// <summary>
@@ -63,11 +63,21 @@ public class Ball : MonoBehaviour
         // Timer for speedup effect
         _timerSpeedupEffect = gameObject.AddComponent<Timer>();
     }
+
+    public void SpawnBallAddListener(UnityAction listener)
+    {
+        _spawnBallEvent.AddListener(listener);
+    }
+    
+    public void BallsLeftAddedListener(UnityAction listener)
+    {
+        _ballsLeft.AddListener(listener);
+    }
     
     /// <summary>
     /// Set directions after hit paddle
-    /// </summary>
     /// <param name="direction">direction</param>
+    /// </summary>
     public void SetDirection(Vector2 direction)
     {
         Rigidbody2D rigidbody2D = GetComponent<Rigidbody2D>();
@@ -75,10 +85,6 @@ public class Ball : MonoBehaviour
         rigidbody2D.velocity = direction * speed;
     }
 
-    public void BallsLeftAddedListener(UnityAction listener)
-    {
-        _ballsLeft.AddListener(listener);
-    }
     
     void Update()
     {
@@ -88,6 +94,7 @@ public class Ball : MonoBehaviour
         if (gameObject.transform.position.y < ScreenUtils.ScreenBottom)
         {
             _ballsLeft.Invoke();
+            AudioManager.Play(AudioClipName.LossBall);
             DestroyAndSpawn();
         }
 
@@ -147,6 +154,6 @@ public class Ball : MonoBehaviour
     private void DestroyAndSpawn()
     {
         Destroy(gameObject);
-        _ballSpawner.SpawnBall();
+        _spawnBallEvent.Invoke();
     }
 }

@@ -19,7 +19,81 @@ public static class EventManager
     // reduce ball left event
     private static List<Ball> _ballsLeftInvoker = new List<Ball>();
     private static List<UnityAction> _ballsLeftListener = new List<UnityAction>();
+    
+    // spawn ball event
+    private static Ball _ballSpawnInvoker;
+    private static UnityAction _ballSpawnListener;
+    
+    // event for last ball
+    private static HUD _lastBallInvoker;
+    private static UnityAction<int> _lastBallListener;
 
+    //event for last block
+    private static WackyBreakout _lastBlockInvoker;
+    private static UnityAction _lastBlockListener;
+    
+    private static Block _blockInvoker;
+    private static UnityAction _blockListener;
+    
+    public static void BlockInvoker(Block invoker)
+    {
+        _blockInvoker = invoker;
+        if (_blockListener != null)
+            _blockInvoker.BlockListener(_blockListener);
+            
+    }
+
+    public static void BlockListener(UnityAction listener)
+    {
+        _blockListener = listener;
+        if (_blockInvoker != null)
+            _blockInvoker.BlockListener(listener);
+    }
+    
+    public static void LastBlockInvoker(WackyBreakout invoker)
+    {
+        _lastBlockInvoker = invoker;
+        if (_lastBlockListener != null)
+            _lastBlockInvoker.LastBlockListener(_lastBlockListener);
+            
+    }
+
+    public static void LastBlockListener(UnityAction listener)
+    {
+        _lastBlockListener = listener;
+        if (_lastBlockInvoker != null)
+            _lastBlockInvoker.LastBlockListener(listener);
+    }
+    
+    public static void LastBallInvoker(HUD invoker)
+    {
+        _lastBallInvoker = invoker;
+        if (_lastBallListener != null)
+            _lastBallInvoker.LastBallAddListener(_lastBallListener);
+            
+    }
+
+    public static void LastBallListener(UnityAction<int> listener)
+    {
+        _lastBallListener = listener;
+        if (_lastBallInvoker != null)
+            _lastBallInvoker.LastBallAddListener(listener);
+    }
+    
+    public static void BallSpawnInvoker(Ball invoker)
+    {
+        _ballSpawnInvoker = invoker;
+        if (_ballSpawnListener != null)
+            _ballSpawnInvoker.SpawnBallAddListener(_ballSpawnListener);
+    }
+
+    public static void BallSpawnListener(UnityAction listener)
+    {
+        _ballSpawnListener = listener;
+        if (_ballSpawnInvoker != null)
+            _ballSpawnInvoker.SpawnBallAddListener(listener);
+    }
+    
     public static void BallsLeftInvokers(Ball invoker)
     {
         _ballsLeftInvoker.Add(invoker);
